@@ -32,6 +32,49 @@ openclaw onboard --non-interactive \
 
 Add `--json` for a machine-readable summary.
 
+## Non-interactive auth choice selection
+
+You can select provider auth in two ways:
+
+1. Pass `--auth-choice <value>` explicitly.
+2. Omit `--auth-choice` and pass exactly one provider key flag (onboarding infers the choice).
+
+If you pass multiple provider key flags at once, onboarding fails and asks you to use one flag (or set
+`--auth-choice` explicitly).
+
+### API key auth choices and matching flags
+
+These key flags map directly to `--auth-choice` values:
+
+| Auth choice                     | Key flag                          | Expected env var in `--secret-input-mode ref`  |
+| ------------------------------- | --------------------------------- | ---------------------------------------------- |
+| `apiKey`                        | `--anthropic-api-key`             | `ANTHROPIC_API_KEY`                            |
+| `openai-api-key`                | `--openai-api-key`                | `OPENAI_API_KEY`                               |
+| `gemini-api-key`                | `--gemini-api-key`                | `GEMINI_API_KEY`                               |
+| `mistral-api-key`               | `--mistral-api-key`               | `MISTRAL_API_KEY`                              |
+| `openrouter-api-key`            | `--openrouter-api-key`            | `OPENROUTER_API_KEY`                           |
+| `kilocode-api-key`              | `--kilocode-api-key`              | `KILOCODE_API_KEY`                             |
+| `litellm-api-key`               | `--litellm-api-key`               | `LITELLM_API_KEY`                              |
+| `ai-gateway-api-key`            | `--ai-gateway-api-key`            | `AI_GATEWAY_API_KEY`                           |
+| `cloudflare-ai-gateway-api-key` | `--cloudflare-ai-gateway-api-key` | `CLOUDFLARE_AI_GATEWAY_API_KEY`                |
+| `moonshot-api-key`              | `--moonshot-api-key`              | `MOONSHOT_API_KEY`                             |
+| `kimi-code-api-key`             | `--kimi-code-api-key`             | `KIMI_API_KEY`                                 |
+| `zai-api-key`                   | `--zai-api-key`                   | `ZAI_API_KEY`                                  |
+| `xiaomi-api-key`                | `--xiaomi-api-key`                | `XIAOMI_API_KEY`                               |
+| `minimax-api`                   | `--minimax-api-key`               | `MINIMAX_API_KEY`                              |
+| `synthetic-api-key`             | `--synthetic-api-key`             | `SYNTHETIC_API_KEY`                            |
+| `venice-api-key`                | `--venice-api-key`                | `VENICE_API_KEY`                               |
+| `together-api-key`              | `--together-api-key`              | `TOGETHER_API_KEY`                             |
+| `huggingface-api-key`           | `--huggingface-api-key`           | `HF_TOKEN`                                     |
+| `opencode-zen`                  | `--opencode-zen-api-key`          | `OPENCODE_API_KEY` (or `OPENCODE_ZEN_API_KEY`) |
+| `xai-api-key`                   | `--xai-api-key`                   | `XAI_API_KEY`                                  |
+| `qianfan-api-key`               | `--qianfan-api-key`               | `QIANFAN_API_KEY`                              |
+| `volcengine-api-key`            | `--volcengine-api-key`            | `VOLCANO_ENGINE_API_KEY`                       |
+| `byteplus-api-key`              | `--byteplus-api-key`              | `BYTEPLUS_API_KEY`                             |
+
+For custom providers, onboarding infers `--auth-choice custom-api-key` when you pass any of:
+`--custom-base-url`, `--custom-model-id`, or `--custom-api-key`.
+
 Use `--secret-input-mode ref` to store env-backed refs in auth profiles instead of plaintext values.
 Interactive selection between env refs and configured provider refs (`file` or `exec`) is available in the onboarding wizard flow.
 

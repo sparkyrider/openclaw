@@ -230,6 +230,24 @@ Headless and server tip: complete OAuth on a machine with a browser, then copy
 to the gateway host.
 </Note>
 
+## Non-interactive failure modes (quick triage)
+
+When `openclaw onboard --non-interactive` exits early, check these first:
+
+- **Multiple provider key flags at once**: auth choice inference accepts only one provider family at a time.
+  Use a single key flag or pass `--auth-choice` explicitly.
+- **`--auth-choice token` without required token flags**:
+  - `--token-provider` is required
+  - only `--token-provider anthropic` is currently supported
+  - `--token` is required
+- **`--auth-choice setup-token` in non-interactive mode**: this mode is interactive-only;
+  use `--auth-choice token` with `--token-provider anthropic` and `--token` instead.
+- **Invalid secret input mode**: `--secret-input-mode` must be `plaintext` or `ref`.
+- **Reference mode without matching env var**: in `--secret-input-mode ref`, onboarding stores env refs only in
+  non-interactive mode, so the provider env var must be set in the process environment.
+  Passing an inline key flag alone is not enough for ref mode.
+- **Custom provider compatibility mismatch**: `--custom-compatibility` must be `openai` or `anthropic`.
+
 ## Outputs and internals
 
 Typical fields in `~/.openclaw/openclaw.json`:

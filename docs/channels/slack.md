@@ -500,11 +500,11 @@ channels:
 Legacy keys:
 
 - `channels.slack.streamMode` (`replace | status_final | append`) is auto-migrated to `channels.slack.streaming`.
-- boolean `channels.slack.streaming` is auto-migrated to `channels.slack.nativeStreaming`.
+- boolean `channels.slack.streaming` is normalized to the canonical `channels.slack.streaming` enum and `channels.slack.nativeStreaming`.
 
-Legacy boolean gotcha: `streaming: false` is treated as `streaming: "partial"` with
-`nativeStreaming: false`, so it still sends draft preview updates (and Slack will
-show `(edited)` churn). Set `streaming: "off"` to fully disable previews.
+Legacy boolean note: `streaming: false` is normalized to `streaming: "off"` with
+`nativeStreaming: false`, so current releases disable preview streaming fully.
+Prefer `streaming: "off"` in new configs to make intent explicit.
 
 ### Requirements
 

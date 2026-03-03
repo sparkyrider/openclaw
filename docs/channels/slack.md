@@ -502,9 +502,11 @@ Legacy keys:
 - `channels.slack.streamMode` (`replace | status_final | append`) is auto-migrated to `channels.slack.streaming`.
 - boolean `channels.slack.streaming` is normalized to the canonical `channels.slack.streaming` enum and `channels.slack.nativeStreaming`.
 
-Legacy boolean note: `streaming: false` is normalized to `streaming: "off"` with
-`nativeStreaming: false`, so current releases disable preview streaming fully.
-Prefer `streaming: "off"` in new configs to make intent explicit.
+Legacy boolean note: when boolean `streaming` is used by itself, `streaming: false`
+is normalized to `streaming: "off"` with `nativeStreaming: false`. If legacy
+`streamMode` is also present, `streamMode` still determines preview behavior and
+the boolean only affects `nativeStreaming`. Prefer the canonical `streaming` enum
+in new configs.
 
 ### Requirements
 

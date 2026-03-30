@@ -18,6 +18,26 @@ describe("createResolvedApproverActionAuthAdapter", () => {
     ).toEqual({ authorized: true });
   });
 
+  it("fails closed when approvers are configured but none resolve", () => {
+    const auth = createResolvedApproverActionAuthAdapter({
+      channelLabel: "Slack",
+      resolveApprovers: () => [],
+      hasConfiguredApprovers: () => true,
+    });
+
+    expect(
+      auth.authorizeActorAction({
+        cfg: {},
+        senderId: "U_ATTACKER",
+        action: "approve",
+        approvalKind: "exec",
+      }),
+    ).toEqual({
+      authorized: false,
+      reason: "❌ You are not authorized to approve exec requests on Slack.",
+    });
+  });
+
   it("allows matching normalized approvers and rejects others", () => {
     const auth = createResolvedApproverActionAuthAdapter({
       channelLabel: "Signal",

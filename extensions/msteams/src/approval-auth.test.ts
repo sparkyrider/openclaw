@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { msTeamsApprovalAuth } from "./approval-auth.js";
 
 describe("msTeamsApprovalAuth", () => {
-  it("authorizes stable Teams user ids and ignores display-name allowlists", () => {
+  it("authorizes stable Teams user ids and rejects unresolved allowlists", () => {
     expect(
       msTeamsApprovalAuth.authorizeActorAction({
         cfg: {
@@ -27,6 +27,9 @@ describe("msTeamsApprovalAuth", () => {
         action: "approve",
         approvalKind: "exec",
       }),
-    ).toEqual({ authorized: true });
+    ).toEqual({
+      authorized: false,
+      reason: "❌ You are not authorized to approve exec requests on Microsoft Teams.",
+    });
   });
 });

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { mattermostApprovalAuth } from "./approval-auth.js";
 
 describe("mattermostApprovalAuth", () => {
-  it("authorizes stable Mattermost user ids and ignores usernames", () => {
+  it("authorizes stable Mattermost user ids and rejects unresolved usernames", () => {
     expect(
       mattermostApprovalAuth.authorizeActorAction({
         cfg: {
@@ -23,6 +23,9 @@ describe("mattermostApprovalAuth", () => {
         action: "approve",
         approvalKind: "exec",
       }),
-    ).toEqual({ authorized: true });
+    ).toEqual({
+      authorized: false,
+      reason: "❌ You are not authorized to approve exec requests on Mattermost.",
+    });
   });
 });

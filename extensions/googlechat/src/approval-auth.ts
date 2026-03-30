@@ -27,5 +27,9 @@ export const googleChatApprovalAuth = createResolvedApproverActionAuthAdapter({
       normalizeApprover: normalizeGoogleChatApproverId,
     });
   },
+  hasConfiguredApprovers: ({ cfg, accountId }) => {
+    const account = resolveGoogleChatAccount({ cfg, accountId }).config;
+    return Boolean(account.dm?.allowFrom?.length || account.defaultTo?.trim());
+  },
   normalizeSenderId: (value) => normalizeGoogleChatApproverId(value),
 });

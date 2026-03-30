@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { feishuApprovalAuth } from "./approval-auth.js";
 
 describe("feishuApprovalAuth", () => {
-  it("authorizes open_id approvers and ignores user_id-only allowlists", () => {
+  it("authorizes open_id approvers and rejects user_id-only allowlists", () => {
     expect(
       feishuApprovalAuth.authorizeActorAction({
         cfg: { channels: { feishu: { allowFrom: ["ou_owner"] } } },
@@ -19,6 +19,9 @@ describe("feishuApprovalAuth", () => {
         action: "approve",
         approvalKind: "exec",
       }),
-    ).toEqual({ authorized: true });
+    ).toEqual({
+      authorized: false,
+      reason: "❌ You are not authorized to approve exec requests on Feishu.",
+    });
   });
 });

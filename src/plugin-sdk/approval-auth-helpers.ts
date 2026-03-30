@@ -10,6 +10,7 @@ function defaultNormalizeSenderId(value: string): string | undefined {
 export function createResolvedApproverActionAuthAdapter(params: {
   channelLabel: string;
   resolveApprovers: (params: { cfg: OpenClawConfig; accountId?: string | null }) => string[];
+  hasConfiguredApprovers?: (params: { cfg: OpenClawConfig; accountId?: string | null }) => boolean;
   normalizeSenderId?: (value: string) => string | undefined;
 }) {
   const normalizeSenderId = params.normalizeSenderId ?? defaultNormalizeSenderId;
@@ -29,7 +30,13 @@ export function createResolvedApproverActionAuthAdapter(params: {
     }) {
       const approvers = params.resolveApprovers({ cfg, accountId });
       if (approvers.length === 0) {
-        return { authorized: true } as const;
+        if (!params.hasConfiguredApprovers?.({ cfg, accountId })) {
+          return { authorized: true } as const;
+        }
+        return {
+          authorized: false,
+          reason: `❌ You are not authorized to approve ${approvalKind} requests on ${params.channelLabel}.`,
+        } as const;
       }
       const normalizedSenderId = senderId ? normalizeSenderId(senderId) : undefined;
       if (normalizedSenderId && approvers.includes(normalizedSenderId)) {

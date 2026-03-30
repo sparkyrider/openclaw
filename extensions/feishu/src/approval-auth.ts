@@ -20,5 +20,9 @@ export const feishuApprovalAuth = createResolvedApproverActionAuthAdapter({
       normalizeApprover: normalizeFeishuApproverId,
     });
   },
+  hasConfiguredApprovers: ({ cfg, accountId }) => {
+    const account = resolveFeishuAccount({ cfg, accountId }).config;
+    return Boolean(account.allowFrom?.length);
+  },
   normalizeSenderId: (value) => normalizeFeishuApproverId(value),
 });

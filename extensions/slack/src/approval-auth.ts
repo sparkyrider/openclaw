@@ -29,5 +29,11 @@ export const slackApprovalAuth = createResolvedApproverActionAuthAdapter({
       normalizeApprover: normalizeSlackApproverId,
     });
   },
+  hasConfiguredApprovers: ({ cfg, accountId }) => {
+    const account = resolveSlackAccount({ cfg, accountId }).config;
+    return Boolean(
+      account.allowFrom?.length || account.dm?.allowFrom?.length || account.defaultTo?.trim(),
+    );
+  },
   normalizeSenderId: (value) => normalizeSlackApproverId(value),
 });

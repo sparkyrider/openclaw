@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { googleChatApprovalAuth } from "./approval-auth.js";
 
 describe("googleChatApprovalAuth", () => {
-  it("authorizes stable users/* ids and ignores email-style approvers", () => {
+  it("authorizes stable users/* ids and rejects unresolved email-style approvers", () => {
     expect(
       googleChatApprovalAuth.authorizeActorAction({
         cfg: { channels: { googlechat: { dm: { allowFrom: ["users/123"] } } } },
@@ -19,6 +19,9 @@ describe("googleChatApprovalAuth", () => {
         action: "approve",
         approvalKind: "exec",
       }),
-    ).toEqual({ authorized: true });
+    ).toEqual({
+      authorized: false,
+      reason: "❌ You are not authorized to approve exec requests on Google Chat.",
+    });
   });
 });

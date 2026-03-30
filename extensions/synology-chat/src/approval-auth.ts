@@ -19,5 +19,9 @@ export const synologyChatApprovalAuth = createResolvedApproverActionAuthAdapter(
       normalizeApprover: normalizeSynologyChatApproverId,
     });
   },
+  hasConfiguredApprovers: ({ cfg, accountId }) => {
+    const account = resolveAccount((cfg ?? {}) as OpenClawConfig, accountId);
+    return Boolean(account.allowedUserIds?.length);
+  },
   normalizeSenderId: (value) => normalizeSynologyChatApproverId(value),
 });

@@ -23,5 +23,9 @@ export const whatsappApprovalAuth = createResolvedApproverActionAuthAdapter({
       normalizeApprover: normalizeWhatsAppApproverId,
     });
   },
+  hasConfiguredApprovers: ({ cfg, accountId }) => {
+    const account = resolveWhatsAppAccount({ cfg, accountId });
+    return Boolean(account.allowFrom?.length || account.defaultTo?.trim());
+  },
   normalizeSenderId: (value) => normalizeWhatsAppApproverId(value),
 });

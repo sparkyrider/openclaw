@@ -30,6 +30,10 @@ export const msTeamsApprovalAuth = createResolvedApproverActionAuthAdapter({
       normalizeApprover: normalizeMSTeamsApproverId,
     });
   },
+  hasConfiguredApprovers: ({ cfg }) => {
+    const channel = resolveMSTeamsChannelConfig(cfg);
+    return Boolean(channel?.allowFrom?.length || channel?.defaultTo?.trim());
+  },
   normalizeSenderId: (value) => {
     const trimmed = value.trim().toLowerCase();
     return MSTEAMS_ID_RE.test(trimmed) ? trimmed : undefined;

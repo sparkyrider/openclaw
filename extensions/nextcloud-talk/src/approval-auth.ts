@@ -23,5 +23,9 @@ export const nextcloudTalkApprovalAuth = createResolvedApproverActionAuthAdapter
       normalizeApprover: normalizeNextcloudTalkApproverId,
     });
   },
+  hasConfiguredApprovers: ({ cfg, accountId }) => {
+    const account = resolveNextcloudTalkAccount({ cfg: cfg as CoreConfig, accountId });
+    return Boolean(account.config.allowFrom?.length);
+  },
   normalizeSenderId: (value) => normalizeNextcloudTalkApproverId(value),
 });

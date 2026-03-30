@@ -21,5 +21,9 @@ export const zaloApprovalAuth = createResolvedApproverActionAuthAdapter({
       normalizeApprover: normalizeZaloApproverId,
     });
   },
+  hasConfiguredApprovers: ({ cfg, accountId }) => {
+    const account = resolveZaloAccount({ cfg, accountId }).config;
+    return Boolean(account.allowFrom?.length);
+  },
   normalizeSenderId: (value) => normalizeZaloApproverId(value),
 });

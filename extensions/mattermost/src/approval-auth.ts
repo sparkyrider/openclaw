@@ -25,5 +25,9 @@ export const mattermostApprovalAuth = createResolvedApproverActionAuthAdapter({
       normalizeApprover: normalizeMattermostApproverId,
     });
   },
+  hasConfiguredApprovers: ({ cfg, accountId }) => {
+    const account = resolveMattermostAccount({ cfg, accountId }).config;
+    return Boolean(account.allowFrom?.length);
+  },
   normalizeSenderId: (value) => normalizeMattermostApproverId(value),
 });

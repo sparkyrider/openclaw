@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { whatsappApprovalAuth } from "./approval-auth.js";
 
 describe("whatsappApprovalAuth", () => {
-  it("authorizes direct WhatsApp recipients and ignores groups", () => {
+  it("authorizes direct WhatsApp recipients and rejects unresolved groups", () => {
     expect(
       whatsappApprovalAuth.authorizeActorAction({
         cfg: { channels: { whatsapp: { allowFrom: ["+1 (555) 123-0000"] } } },
@@ -19,6 +19,9 @@ describe("whatsappApprovalAuth", () => {
         action: "approve",
         approvalKind: "exec",
       }),
-    ).toEqual({ authorized: true });
+    ).toEqual({
+      authorized: false,
+      reason: "❌ You are not authorized to approve exec requests on WhatsApp.",
+    });
   });
 });

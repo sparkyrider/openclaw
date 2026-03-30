@@ -29,5 +29,9 @@ export const signalApprovalAuth = createResolvedApproverActionAuthAdapter({
       normalizeApprover: normalizeSignalApproverId,
     });
   },
+  hasConfiguredApprovers: ({ cfg, accountId }) => {
+    const account = resolveSignalAccount({ cfg, accountId }).config;
+    return Boolean(account.allowFrom?.length || account.defaultTo?.trim());
+  },
   normalizeSenderId: (value) => normalizeSignalApproverId(value),
 });

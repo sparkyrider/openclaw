@@ -20,5 +20,9 @@ export const matrixApprovalAuth = createResolvedApproverActionAuthAdapter({
       normalizeApprover: normalizeMatrixApproverId,
     });
   },
+  hasConfiguredApprovers: ({ cfg, accountId }) => {
+    const account = resolveMatrixAccount({ cfg: cfg as CoreConfig, accountId });
+    return Boolean(account.config.dm?.allowFrom?.length);
+  },
   normalizeSenderId: (value) => normalizeMatrixApproverId(value),
 });
